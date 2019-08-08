@@ -15,6 +15,8 @@ list(APPEND SOURCES
     "${PROJECT_SOURCE_DIR}/src/input.c"
     "${PROJECT_SOURCE_DIR}/src/output.c"
     "${PROJECT_SOURCE_DIR}/src/led.c"
+    "${PROJECT_SOURCE_DIR}/src/motor.c"
+    "${PROJECT_SOURCE_DIR}/src/buzzer.c"
 )
 
 include_directories(${HEADERS})

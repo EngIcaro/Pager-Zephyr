@@ -8,6 +8,7 @@
 #include "input.h"
 #include "output.h"
 #include "led.h"
+#include "motor.h"
 
 /***** SETUP BUTTONS ******/
 /* change this to use another GPIO port */
@@ -33,13 +34,13 @@
 
 void main(void)
 {
-	leds_configure();
+	motors_configure();
 	while (1) {
 		u32_t val = 0U;
-		set_all_leds(0);
+		set_motor('0', 1);
 		k_sleep(SLEEP_TIME);
-		set_all_leds(1);
-		k_sleep(SLEEP_TIME);
+		//set_motor('0', 1);
+		//k_sleep(SLEEP_TIME);
 
 	}
 }

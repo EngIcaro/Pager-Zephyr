@@ -1,17 +1,5 @@
 #include "led.h"
 
-#define LED_CONTROLLER_ZERO	    LED0_GPIO_CONTROLLER
-#define LED_CONTROLLER_ONE		  LED1_GPIO_CONTROLLER
-#define LED_CONTROLLER_TWO	    LED2_GPIO_CONTROLLER
-#define LED_CONTROLLER_THREE	  LED3_GPIO_CONTROLLER
-#define LED_CONTROLLER_FOUR	    LED4_GPIO_CONTROLLER
-#define LED_CONTROLLER_FIVE	    LED5_GPIO_CONTROLLER
-#define LED_PIN_ZERO						LED0_GPIO_PIN
-#define LED_PIN_ONE						  LED1_GPIO_PIN
-#define LED_PIN_TWO					    LED2_GPIO_PIN
-#define LED_PIN_THREE					  LED3_GPIO_PIN
-#define LED_PIN_FOUR					  LED4_GPIO_PIN
-#define LED_PIN_FIVE					  LED5_GPIO_PIN
 
 output_t led0, led1, led2, led3, led4, led5;
 
@@ -65,4 +53,31 @@ void set_all_leds(u8_t value){
   output_set(&led3, value);
   output_set(&led4, value);
   output_set(&led5, value);
+}
+
+void call_leds(){
+  set_led('0', 0);
+  k_sleep(SLEEP_LED);
+  set_led('1', 0);
+  k_sleep(SLEEP_LED);
+  set_led('2', 0);
+  k_sleep(SLEEP_LED);
+  set_led('3', 0);
+  k_sleep(SLEEP_LED);
+  set_led('4', 0);
+  k_sleep(SLEEP_LED);
+  set_led('5', 0);
+  k_sleep(SLEEP_LED);
+  // back
+  set_led('5', 1);
+  k_sleep(SLEEP_LED);
+  set_led('4', 1);
+  k_sleep(SLEEP_LED);
+  set_led('3', 1);
+  k_sleep(SLEEP_LED);
+  set_led('2', 1);
+  k_sleep(SLEEP_LED);
+  set_led('1', 1);
+  k_sleep(SLEEP_LED);
+  set_led('0', 1);
 }
