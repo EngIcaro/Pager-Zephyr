@@ -4,7 +4,7 @@
 output_t led0, led1, led2, led3, led4, led5;
 
 void leds_configure(){
-
+  
   output_open(&led0, LED0_GPIO_CONTROLLER);
   output_open(&led1, LED1_GPIO_CONTROLLER);
   output_open(&led2, LED2_GPIO_CONTROLLER);

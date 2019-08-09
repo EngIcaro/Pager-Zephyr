@@ -4,7 +4,13 @@
 #include <gpio.h>
 #include "output.h"
 
+#define SLEEP_BUZZER 1000
 
+void buzzer_configure();
+
+void set_buzzer(u8_t value);
+
+void alarm();
 
 
 #endif

@@ -10,37 +10,33 @@
 #include "led.h"
 #include "motor.h"
 
-/***** SETUP BUTTONS ******/
-/* change this to use another GPIO port */
-#define PORT0	SW0_GPIO_CONTROLLER
-/*#define PORT1	SW1_GPIO_CONTROLLER
-#define PORT2	SW2_GPIO_CONTROLLER
-#define PORT3	SW3_GPIO_CONTROLLER
 
-/* change this to use another GPIO pin */
-/*
-#define PIN0     SW0_GPIO_PIN
-#define PIN1     SW1_GPIO_PIN
-#define PIN2     SW2_GPIO_PIN
-#define PIN3     SW3_GPIO_PIN
-*/
-/* change to use another GPIO pin interrupt config */
-#define EDGE    GPIO_INT_EDGE
-#define PULL_UP GPIO_PUD_PULL_UP
-#define DEBOUCE GPIO_INT_DEBOUNCE
+/* size of stack area used by each thread */
+#define STACKSIZE 1024
+#define PRIORITY 2
+
 #define SLEEP_TIME	3000
 
+
+void led_function(){
+	leds_configure();
+	call_leds();
+}
+
+void motor_function(){
+	motors_configure();
+	call_motors();
+}
+
+K_THREAD_DEFINE(leds_id, STACKSIZE, led_function, NULL, NULL, NULL, PRIORITY, 0,
+		K_NO_WAIT);
+K_THREAD_DEFINE(motor_id, STACKSIZE, motor_function, NULL, NULL, NULL, PRIORITY, 0,
+		K_NO_WAIT);
 
 
 void main(void)
 {
-	motors_configure();
 	while (1) {
 		u32_t val = 0U;
-		set_motor('0', 1);
-		k_sleep(SLEEP_TIME);
-		//set_motor('0', 1);
-		//k_sleep(SLEEP_TIME);
-
 	}
 }

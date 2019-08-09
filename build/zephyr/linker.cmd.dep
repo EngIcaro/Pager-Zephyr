@@ -1,0 +1,35 @@
+zephyr/linker.cmd: \
+ /home/icaro/zephyrproject/zephyr/soc/arm/nordic_nrf/nrf52/linker.ld \
+ /home/icaro/zephyrproject/zephyr/include/arch/arm/cortex_m/scripts/linker.ld \
+ /home/icaro/zephyrproject/zephyr/pager/build/zephyr/include/generated/autoconf.h \
+ /home/icaro/zephyrproject/zephyr/include/linker/sections.h \
+ /home/icaro/zephyrproject/zephyr/include/linker/section_tags.h \
+ /home/icaro/zephyrproject/zephyr/include/toolchain.h \
+ /home/icaro/zephyrproject/zephyr/include/toolchain/gcc.h \
+ /home/icaro/zephyrproject/zephyr/include/toolchain/common.h \
+ /home/icaro/zephyrproject/zephyr/lib/libc/minimal/include/stdbool.h \
+ /home/icaro/zephyrproject/zephyr/include/generated_dts_board.h \
+ /home/icaro/zephyrproject/zephyr/pager/build/zephyr/include/generated/generated_dts_board_unfixed.h \
+ /home/icaro/zephyrproject/zephyr/pager/build/zephyr/include/generated/generated_dts_board_unfixed.h.deprecated \
+ /home/icaro/zephyrproject/zephyr/pager/build/zephyr/include/generated/generated_dts_board_fixups.h \
+ /home/icaro/zephyrproject/zephyr/include/linker/linker-defs.h \
+ /home/icaro/zephyrproject/zephyr/include/sys/util.h \
+ /home/icaro/zephyrproject/zephyr/pager/build/zephyr/include/generated/offsets.h \
+ /home/icaro/zephyrproject/zephyr/include/linker/linker-tool.h \
+ /home/icaro/zephyrproject/zephyr/include/linker/linker-tool-gcc.h \
+ /home/icaro/zephyrproject/zephyr/include/linker/rel-sections.ld \
+ /home/icaro/zephyrproject/zephyr/include/linker/priv_stacks-text.ld \
+ /home/icaro/zephyrproject/zephyr/include/linker/kobject-text.ld \
+ /home/icaro/zephyrproject/zephyr/include/linker/common-rom.ld \
+ /home/icaro/zephyrproject/zephyr/pager/build/zephyr/include/generated/snippets-rodata.ld \
+ /home/icaro/zephyrproject/zephyr/include/linker/priv_stacks-rom.ld \
+ /home/icaro/zephyrproject/zephyr/include/linker/kobject-rom.ld \
+ /home/icaro/zephyrproject/zephyr/pager/build/zephyr/include/generated/snippets-ram-sections.ld \
+ /home/icaro/zephyrproject/zephyr/pager/build/zephyr/include/generated/snippets-noinit.ld \
+ /home/icaro/zephyrproject/zephyr/pager/build/zephyr/include/generated/snippets-rwdata.ld \
+ /home/icaro/zephyrproject/zephyr/include/linker/common-ram.ld \
+ /home/icaro/zephyrproject/zephyr/include/linker/priv_stacks.ld \
+ /home/icaro/zephyrproject/zephyr/include/linker/kobject.ld \
+ /home/icaro/zephyrproject/zephyr/include/linker/priv_stacks-noinit.ld \
+ /home/icaro/zephyrproject/zephyr/pager/build/zephyr/include/generated/snippets-sections.ld \
+ /home/icaro/zephyrproject/zephyr/include/linker/debug-sections.ld
