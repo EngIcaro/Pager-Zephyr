@@ -6,10 +6,11 @@
 
 #define SLEEP_BUZZER 1000
 
+// Função que configura o buzzer
 void buzzer_configure();
-
+// Função que seta o buzzer com valor desejado
 void set_buzzer(u8_t value);
-
+// Função que chama a rotina de alarme do buzzer
 void alarm();
 
 

@@ -18,10 +18,9 @@ void set_led(char led, u8_t value);
 // Função para setar todos os LEDS
 void set_all_leds(u8_t value);
 
-// Função de piscar todos os LEDS
+// Função que chama a rotina call do sistema
 void call_leds();
 
-// Função caracol de todos os LEDS
 
 
 #endif
