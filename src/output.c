@@ -4,11 +4,12 @@
 int output_open(output_t *out, char *dev_label) {
     out->dev_label = dev_label;
     out->device = device_get_binding(out->dev_label);
+    
     if(out->device == NULL){
       printk("Error: Device not found or cannot be used");
       return 1;
     }
-    printk("Returning from output_open\n");
+    //printk("Returning from output_open\n");
     return 0;
 }
 
@@ -18,13 +19,20 @@ int output_configure(output_t *out, u32_t pin, int flags) {
     if(status < 0){
       printk("Error: configure pin error");
     }
-    printk("Returning from output_configure\n");
+    //printk("Returning from output_configure\n");
     return 0;
 }
 
 int output_set(output_t *out, u8_t value) {
     out->state = value;
     gpio_pin_write(out->device, out->pin, out->state);
-    printk("Returning from output_set\n");
+    //printk("Returning from output_set\n");
+    if(value){
+      printk("-> LED(%d): OFF.\n", (out->pin)-11);
+    }
+    else{
+      printk("-> LED(%d): ON!\n", (out->pin)-11);
+    }
+
     return 0;
 }
