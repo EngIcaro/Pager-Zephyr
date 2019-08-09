@@ -19,7 +19,7 @@
 #define SLEEP_TIME	3000
 
 // função da thread leds_id
-void led_function(){
+/*void led_function(){
 	leds_configure();
 	call_leds();
 }
@@ -27,20 +27,21 @@ void led_function(){
 void motor_function(){
 	motors_configure();
 	call_motors();
-}
+}*/
 // AO UTILIZAR K_THREAD_DEFINE É DEFINIDO UMA ÁREA NA PILHA E SEU BLOCO  DE CONTROLE
 // PARAMETROS: (THREAD ID, STACK SIZE, FUNÇÃO DE CHAMADA, P1, P2, P3, PRIORIDADE, OPT, DELAY)
-K_THREAD_DEFINE(leds_id, STACKSIZE, led_function, NULL, NULL, NULL, PRIORITY, 0,
+/*K_THREAD_DEFINE(leds_id, STACKSIZE, led_function, NULL, NULL, NULL, PRIORITY, 0,
 		K_NO_WAIT);
 K_THREAD_DEFINE(motor_id, STACKSIZE, motor_function, NULL, NULL, NULL, PRIORITY, 0,
-		K_NO_WAIT);
+		K_NO_WAIT);*/
 
 
 void main(void)
 {
-	printk("passei hanney");
+	printk("passei [1]\n");
 	while (1) {
-		printk("passei hanney");
+		printk("passei [2]\n");
 		u32_t val = 0U;
+		k_sleep(K_MSEC(1000));
 	}
 }
