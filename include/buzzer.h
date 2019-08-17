@@ -4,7 +4,7 @@
 #include <gpio.h>
 #include "output.h"
 
-#define SLEEP_BUZZER 1000
+#define SLEEP_BUZZER 3000
 
 // Função que configura o buzzer
 void buzzer_configure();

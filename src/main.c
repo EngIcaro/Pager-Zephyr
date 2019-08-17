@@ -10,26 +10,13 @@
 #include "output.h"
 #include "led.h"
 #include "motor.h"
+#include "thread.h"
 
 // /* size of stack area used by each thread */
-#define STACKSIZE 1024
-#define PRIORITY 2
+#define SLEEP_TIME 10000
 
-#define SLEEP_TIME 500
 
-void led_function(){
-		leds_configure();
-		call_leds();
-	}
-
-void motor_function(){
-	motors_configure();
-	call_motors();
-}
 /*
-K_THREAD_DEFINE(leds_id, STACKSIZE, led_function, NULL, NULL, NULL, PRIORITY, 0, K_NO_WAIT);
-K_THREAD_DEFINE(motor_id, STACKSIZE, motor_function, NULL, NULL, NULL, PRIORITY, 0, K_NO_WAIT);
-*/
 static int cmd_call_spin(const struct shell *shell, size_t argc, char **argv) {
 		shell_print(shell, "Spin Leds ...\n");
 
@@ -50,12 +37,22 @@ SHELL_STATIC_SUBCMD_SET_CREATE(sub_call,
 
 // Setando o comando call no root
 SHELL_CMD_REGISTER(call, &sub_call, "Comandos do pager", NULL);
+*/
 
+// Para realizar o teste a Thread main vai dormir durante 10 segundos e quando acordar vai
+// abortar as threads motor, leds e buzzer
 void main(void)
 {
 	printk("One piece é foda!\n");
 	while (1) {
 		u32_t val = 0U;
 		k_sleep(SLEEP_TIME);
+		k_thread_suspend(leds_id);
+		k_thread_suspend(motor_id);
+		k_thread_suspend(buzzer_id);
+		k_sleep(SLEEP_TIME);
+		k_thread_resume(leds_id);
+		k_thread_resume(motor_id);
+		k_thread_resume(buzzer_id);
 	}
 }
