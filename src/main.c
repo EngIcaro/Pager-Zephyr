@@ -11,10 +11,10 @@
 #include "led.h"
 #include "motor.h"
 #include "thread.h"
+#include "ic_logging.h"
 
 // /* size of stack area used by each thread */
 #define SLEEP_TIME 10000
-
 
 /*
 static int cmd_call_spin(const struct shell *shell, size_t argc, char **argv) {
@@ -39,13 +39,23 @@ SHELL_STATIC_SUBCMD_SET_CREATE(sub_call,
 SHELL_CMD_REGISTER(call, &sub_call, "Comandos do pager", NULL);
 */
 
+void post(){
+	
+	printk("Running Post ...\n");
+	leds_configure();
+	motors_configure();
+	buzzer_configure();
+	
+	printk("All right!\n");
+}
+
 // Para realizar o teste a Thread main vai dormir durante 10 segundos e quando acordar vai
 // abortar as threads motor, leds e buzzer
 void main(void)
 {
-	printk("One piece é foda!\n");
+	post();
+	k_sleep(SLEEP_TIME);
 	while (1) {
-		u32_t val = 0U;
 		k_sleep(SLEEP_TIME);
 		k_thread_suspend(leds_id);
 		k_thread_suspend(motor_id);

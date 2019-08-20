@@ -13,6 +13,7 @@
 #ifndef _INPUT_H_
 #define _INPUT_H_
 
+#include <misc/printk.h>
 #include <device.h>
 #include <gpio.h>
 

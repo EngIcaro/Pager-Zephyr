@@ -3,11 +3,9 @@
 
 #include <gpio.h>
 #include "output.h"
-
+#include "ic_logging.h"
 
 #define SLEEP_LED	250
-
-
 
 // Função para configurar todos os LEDS
 void leds_configure();
@@ -20,7 +18,5 @@ void set_all_leds(u8_t value);
 
 // Função que chama a rotina call do sistema
 void call_leds();
-
-
 
 #endif

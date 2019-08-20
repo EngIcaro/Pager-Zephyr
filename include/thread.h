@@ -7,7 +7,6 @@
 #include "motor.h"
 #include "buzzer.h"
 
-
 #define SLEEP_PULSE 3000
 #define STACKSIZE 1024
 #define PRIORITY 1
