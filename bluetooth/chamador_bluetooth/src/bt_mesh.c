@@ -16,8 +16,6 @@ int output_string(const char *str) {
 }
 
 void prov_complete(u16_t net_idx, u16_t addr) {
-	// printk("provisioning complete for net_idx 0x%04x addr 0x%04x\n",
-	//        net_idx, addr);
 	printk("[BLUETOOTH] Provisioning complete for net_idx 0x%04x, address 0x%04x.\n", net_idx, addr);
 	primary_addr    = addr;
 	primary_net_idx = net_idx;
@@ -56,14 +54,6 @@ void bt_ready(int err) {
 	if (IS_ENABLED(CONFIG_SETTINGS)) {
 		settings_load();
 	}
-
-	// /* Use identity address as device UUID */
-	// struct bt_le_oob oob;
-	// if (bt_le_oob_get_local(BT_ID_DEFAULT, &oob)) {
-	// 	printk("Identity Address unavailable\n");
-	// } else {
-	// 	memcpy(dev_uuid, oob.addr.a.val, 6);
-	// }
 
 	bt_mesh_prov_enable(BT_MESH_PROV_GATT | BT_MESH_PROV_ADV);
 

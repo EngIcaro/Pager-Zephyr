@@ -14,8 +14,8 @@
 #define BT_MESH_MODEL_OP_GEN_ONOFF_STATUS	    BT_MESH_MODEL_OP_2(0x82, 0x04)
 
 /* Element Status */
-#define ON 	0
-#define OFF 1
+#define ON 	1
+#define OFF 0
 
 /* Element Context */
 struct onoff_state {

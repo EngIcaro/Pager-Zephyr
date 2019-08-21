@@ -29,7 +29,6 @@ void button_pressed(struct device *dev, struct gpio_callback *cb, u32_t pin) {
 		k_timer_start(&sw.button_timer, K_SECONDS(BUTTON_PRESS_INTERVAL_SEC), 0);
 	}
 
-	// printk("[BUTTON] Button was pressed 0x%02x time(s)\n", button_press_cnt);
 	printk("[BUTTON] Button pressed.\n");
 	button_press_cnt++;
 
@@ -43,8 +42,6 @@ void button_cnt_timer(struct k_timer *work) {
 	struct sw *button_sw = CONTAINER_OF(work, struct sw, button_timer);
 	
 	button_sw->onoff_state = button_press_cnt == 1U ? 1 : 0;
-	// printk("button_press_cnt 0x%02x onoff_state 0x%02x\n",
-	//        button_press_cnt, button_sw->onoff_state);
 	printk("[BUTTON] Button was pressed 0x%02x time(s), setting state 0x%02x.\n",
 	       button_press_cnt, button_sw->onoff_state);
 	button_press_cnt = 0U;
@@ -109,8 +106,6 @@ void button_pressed_worker(struct k_work *work) {
 	/**************** TESTE ***************/
 
 	/* Publishing message */
-	// printk("publish to 0x%04x onoff 0x%04x\n",
-	//        pub_cli->addr, sw->onoff_state);
 	printk("[BLUETOOTH] Publishing state 0x%04x to address 0x%04x.\n",
 	       sw->onoff_state, pub_cli->addr);
 	bt_mesh_model_msg_init(pub_cli->msg, BT_MESH_MODEL_OP_GEN_ONOFF_SET);
@@ -119,7 +114,6 @@ void button_pressed_worker(struct k_work *work) {
 	err = bt_mesh_model_publish(mod_cli);
 
 	if (err) {
-		// printk("bt_mesh_model_publish err %d\n", err);
 		printk("[BLUETOOTH] Publishing failed with err %d.\n", err);
 		/**************** TESTE ***************/
 		// gpio_pin_write(led_device, LED0_GPIO_PIN, 0);
