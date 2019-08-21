@@ -1,14 +1,15 @@
 #include "motor.h"
 
-
-
 output_t motor0, motor1;
 
-void motors_configure(){
-  output_open(&motor0, DT_GPIO_KEYS_MOTOR_0_GPIO_CONTROLLER);
-  output_open(&motor1, DT_GPIO_KEYS_MOTOR_1_GPIO_CONTROLLER);
-  output_configure(&motor0, DT_GPIO_KEYS_MOTOR_0_GPIO_PIN, GPIO_DIR_OUT);
-  output_configure(&motor1, DT_GPIO_KEYS_MOTOR_1_GPIO_PIN, GPIO_DIR_OUT);
+int motors_configure(){
+  
+  if(output_open(&motor0, DT_GPIO_KEYS_MOTOR_0_GPIO_CONTROLLER)){ return 1; }
+  if(output_open(&motor1, DT_GPIO_KEYS_MOTOR_1_GPIO_CONTROLLER)){ return 1; }
+  if(output_configure(&motor0, DT_GPIO_KEYS_MOTOR_0_GPIO_PIN, GPIO_DIR_OUT)){ return 1; }
+  if(output_configure(&motor1, DT_GPIO_KEYS_MOTOR_1_GPIO_PIN, GPIO_DIR_OUT)){ return 1; }
+
+  return 0;
 
 }
 
