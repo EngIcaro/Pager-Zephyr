@@ -1,26 +1,23 @@
 #include "stateMachine.h"
 
-
 struct data_item_type{
     u32_t data1;       // BT ON/OFF
     u32_t data2;       // PAGER DEVOLVIDO
     u32_t data3;	   // CARRREGANDO
 };
 
-
 K_MSGQ_DEFINE(my_msgq, sizeof(struct data_item_type), 10, 4);
 
 void state_machine()
 {
-	printk(" *** State Machine \n");
+	//printk(" *** State Machine \n");
     static enum {WAITING, CHARGING, READY} state = WAITING;
     struct data_item_type package = { 0 };	
     k_msgq_get(&my_msgq, &package, K_FOREVER);
-	u32_t size = k_msgq_num_free_get(&my_msgq);
-	printk(" *** Size = %d\n", size);
+	//u32_t size = k_msgq_num_free_get(&my_msgq);
     switch (state) {
         case WAITING:
-            printk(" *** State --- WAITING \n");
+            //printk(" *** State --- WAITING \n");
             // pedido esta pronto. BT ON
             if (package.data1) {
 				state = READY;
@@ -38,7 +35,7 @@ void state_machine()
 			}
             break;
         case READY:
-            printk(" *** State --- READY\n");
+            //printk(" *** State --- READY\n");
             // Se o pager for devolvido
             if (package.data2){
 				state = WAITING;
@@ -59,7 +56,7 @@ void state_machine()
             }
             break;
         case CHARGING:
-            printk(" *** State --- CHARGING \n");
+            //printk(" *** State --- CHARGING \n");
             // se ele estiver não estiver carregando
             if (package.data2) {
                 state = WAITING;
