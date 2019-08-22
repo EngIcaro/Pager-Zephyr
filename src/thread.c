@@ -4,6 +4,7 @@ void led_thread(){
 	//setup thread
 	leds_configure();
 	while(1){
+		printk("thread led activate\n");
 		call_leds();
 		k_sleep(SLEEP_PULSE);
 	}
@@ -13,6 +14,7 @@ void motor_thread(){
 	//setup thread
 	motors_configure();
 	while(1){
+		printk("thread motor activate\n");
 		call_motors();
 		k_sleep(SLEEP_PULSE);	
 	}
@@ -23,6 +25,7 @@ void buzzer_thread(){
 	//setup thread
 	buzzer_configure();
 		while(1){
+			printk("thread buzzer activate\n");
 			alarm();
 			k_sleep(SLEEP_PULSE);
 		}

@@ -12,13 +12,14 @@
 #include "motor.h"
 #include "thread.h"
 #include "ic_logging.h"
+#include "stateMachine.h"
 
 // /* size of stack area used by each thread */
 #define SLEEP_TIME 6200
 
 static int cmd_call_spin(const struct shell *shell, size_t argc, char **argv) {	
 	shell_print(shell, "Spin Leds ...\n");
-	call_leds();
+	//call_leds();
 	shell_print(shell, "Done!\n");
 	return 0;
 }
@@ -26,13 +27,14 @@ static int cmd_call_spin(const struct shell *shell, size_t argc, char **argv) {
 static int cmd_call_motor(const struct shell *shell, size_t argc, char **argv) {
 	// Acessar: Array de Strings -> String na posição argc+1
 	char motor = *(*(argv+1));
-	set_motor();
+	//set_motor('0',0);
 	shell_print(shell, "Vibrating ...\n");
 	shell_print(shell, "Done!\n");
 	return 0;
 }
 
 static int cmd_call_buzzer(const struct shell *shell, size_t argc, char **argv) {	
+	char motor = *(*(argv+1));
 	shell_print(shell, "Beaping ...\n");
 	alarm();
 	shell_print(shell, "Done!\n");
@@ -89,17 +91,27 @@ void post(){
 
 // Para realizar o teste a Thread main vai dormir durante 10 segundos e quando acordar vai
 // abortar as threads motor, leds e buzzer
+
+
 void main(void)
 {
-	post();
+	//post();
+	k_thread_suspend(leds_id);
+	k_thread_suspend(motor_id);
+	k_thread_suspend(buzzer_id);
 	while (1) {
+		set_waiting();
+		state_machine();
+		k_sleep(K_SECONDS(4));
+		set_ready();
+		state_machine();
+		k_sleep(K_SECONDS(4));
+		set_charging();
+		state_machine();
+		k_sleep(K_SECONDS(4));
+		/*k_sleep(SLEEP_TIME);
+
 		k_sleep(SLEEP_TIME);
-		k_thread_suspend(leds_id);
-		k_thread_suspend(motor_id);
-		k_thread_suspend(buzzer_id);
-		k_sleep(SLEEP_TIME);
-		k_thread_resume(leds_id);
-		k_thread_resume(motor_id);
-		k_thread_resume(buzzer_id);
+		*/
 	}
 }

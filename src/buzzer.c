@@ -16,4 +16,5 @@ void set_buzzer(u8_t value){
 void alarm(){
   set_buzzer(1);
   k_sleep(SLEEP_BUZZER);
+  set_buzzer(0);
 }
