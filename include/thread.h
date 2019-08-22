@@ -6,6 +6,7 @@
 #include "led.h"
 #include "motor.h"
 #include "buzzer.h"
+#include "battery.h"
 
 #define SLEEP_PULSE 3000
 #define STACKSIZE 1024
@@ -14,6 +15,7 @@
 extern const k_tid_t leds_id;
 extern const k_tid_t motor_id;
 extern const k_tid_t buzzer_id;
+extern const k_tid_t battery_id;
 
 void motor_thread();
 
@@ -21,5 +23,6 @@ void led_thread();
 
 void buzzer_thread();
 
+void battery_thread();
 
 #endif

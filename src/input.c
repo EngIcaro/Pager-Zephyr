@@ -15,13 +15,13 @@ int input_open(input_t *in, char *dev_label) {
     return 0;
 }
 
-int input_configure(input_t *in, u32_t pin, int flags, gpio_callback_handler_t cb) {
+int input_configure(input_t *in, u32_t pin, int flags) {
     in->pin = pin;
     gpio_pin_configure(in->device, in->pin, flags);
 
-    gpio_init_callback(&in->gpio_callback, cb, BIT(in->pin));
-    gpio_add_callback(in->device, &in->gpio_callback);
-    gpio_pin_enable_callback(in->device, in->pin);
+    // gpio_init_callback(&in->gpio_callback, cb, BIT(in->pin));
+    // gpio_add_callback(in->device, &in->gpio_callback);
+    // gpio_pin_enable_callback(in->device, in->pin);
     //printk("Returning from input_configure\n");
     return 0;
 }

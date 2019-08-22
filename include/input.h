@@ -45,7 +45,7 @@ int input_open(input_t *in, char *dev_label);
  *
  * @return
  */
-int input_configure(input_t *in, u32_t pin, int flags, gpio_callback_handler_t cb);
+int input_configure(input_t *in, u32_t pin, int flags);
 
 /**
  * Essa função tem como objetivo fazer uma leitura do pino
