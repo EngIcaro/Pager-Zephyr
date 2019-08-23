@@ -31,26 +31,29 @@ static int cmd_call_spin(const struct shell *shell, size_t argc, char **argv) {
 }
 
 static int cmd_call_leds(const struct shell *shell, size_t argc, char **argv) {	
+	char led = *(*(argv+1));
 	shell_print(shell, "Turn on all leds ...\n");
-	set_all_leds(0);
+	set_all_leds(led);
 	shell_print(shell, "Done!\n");
 	return 0;
 }
 
 static int cmd_call_led(const struct shell *shell, size_t argc, char **argv) {
 	char led = *(*(argv+1));
+	char status = *(*(argv+2));
 	if(led == '0') shell_print(shell, "Turn on led %c...\n", led);
 	else shell_print(shell, "Turn off led %c...\n", led);
-	set_led(led, 0);
+	set_led(led, status);
 	shell_print(shell, "Done!\n");
 	return 0;
 }
 
 static int cmd_call_motor(const struct shell *shell, size_t argc, char **argv) {
 	char motor = *(*(argv+1));
+	char status = *(*(argv+2));
 	if(motor == '0') shell_print(shell, "Turn on motor %c...\n", motor);
 	else shell_print(shell, "Turn off motor %c...\n", motor);
-	set_motor(motor, 0);
+	set_motor(motor, status);
 	shell_print(shell, "Done!\n");
 	return 0;
 }
@@ -64,8 +67,9 @@ static int cmd_call_motors(const struct shell *shell, size_t argc, char **argv) 
 }
 
 static int cmd_call_buzzer(const struct shell *shell, size_t argc, char **argv) {	
+	char status = *(*(argv+1));
 	shell_print(shell, "Beaping ...\n");
-	alarm();
+	set_buzzer(status);
 	shell_print(shell, "Done!\n");
 	return 0;
 }
@@ -74,11 +78,11 @@ static int cmd_call_buzzer(const struct shell *shell, size_t argc, char **argv) 
 // Colocando os comandos criados como subcomandos do run
 SHELL_STATIC_SUBCMD_SET_CREATE(sub_call,
     SHELL_CMD_ARG(spin, NULL, "Acione animaçao SPIN.", cmd_call_spin, 1, NULL),
-	SHELL_CMD_ARG(led, NULL, "Acione um Led.", cmd_call_led, 2, NULL),
-    SHELL_CMD_ARG(leds, NULL, "Acione todos os Leds.", cmd_call_leds, 1, NULL),
-    SHELL_CMD_ARG(motor, NULL, "Acione um Motor.", cmd_call_motor, 2, NULL),
+	SHELL_CMD_ARG(led, NULL, "Acione um Led.", cmd_call_led, 3, NULL),
+    SHELL_CMD_ARG(leds, NULL, "Acione todos os Leds.", cmd_call_leds, 2, NULL),
+    SHELL_CMD_ARG(motor, NULL, "Acione um Motor.", cmd_call_motor, 3, NULL),
     SHELL_CMD_ARG(motors, NULL, "Acione os Motores.", cmd_call_motors, 1, NULL),
-    SHELL_CMD_ARG(buzzer, NULL, "Acione o buzzer.", cmd_call_buzzer, 1, NULL),
+    SHELL_CMD_ARG(buzzer, NULL, "Acione o buzzer.", cmd_call_buzzer, 2, NULL),
 	SHELL_SUBCMD_SET_END
 );
 
@@ -86,38 +90,55 @@ SHELL_STATIC_SUBCMD_SET_CREATE(sub_call,
 SHELL_CMD_REGISTER(call, &sub_call, "Comandos do pager", NULL);
 
 void post(){
+	k_thread_suspend(leds_id);
+	k_thread_suspend(motor_id);
+	k_thread_suspend(buzzer_id);
 
-	printk("\n... ... Running Post ... ...\n");
-	printk("Leds Configure...\n");
+	printk("Running Post...\n");
+	k_sleep(1500);
+	// printk("Leds Configure...\n");
 	if(!leds_configure()){
-		printk("Leds OK!\n");
+		printk("Leds Configure... OK!\n");
 	} else{ 
-		printk("... ... Error on Leds configure ... ...\n");
+		printk("Leds Configure... ERROR!\n");
 		return;
 	}
 	set_all_leds(0);
-	k_sleep(500);
+	k_sleep(1000);
 	set_all_leds(1);
 	
-	printk("Motors Configure...\n");
+	// printk("\n");
 	if(!motors_configure()){
-		printk("Motors OK!\n");
+		printk("Motors Configure... OK!\n");
 	} else{ 
-		printk("... ... Error on Motors configure ... ...\n");
+		printk("Motors Configure...  ERROR!\n");
 		return;
 	}
-	call_motors();
 
-	printk("Buzzer Configure...\n");
+	set_motor('0', 1);
+	set_motor('1', 1);
+	k_sleep(1000);
+	set_motor('0', 0);
+	set_motor('1', 0);
+
+	// printk("Buzzer Configure...\n");
 	if(!buzzer_configure()){
-		printk("Buzzer OK!\n");
+		printk("Buzzer Configure... OK!\n");
 	} else{ 
-		printk("... ... Error on Buzzer configure ... ...\n");
+		printk("Buzzer Configure... ERROR!\n");
 		return;
 	}
-	alarm();
 
-	printk("... ... All right! ... ...\n");
+	set_buzzer('1');
+	k_sleep(1000);
+	set_buzzer('0');
+
+	printk("Pau na máquina!\n");
+	k_sleep(1500);
+
+	k_thread_resume(leds_id);
+	k_thread_resume(motor_id);
+	k_thread_resume(buzzer_id);
 }
 
 // Para realizar o teste a Thread main vai dormir durante 10 segundos e quando acordar vai
@@ -126,7 +147,7 @@ void post(){
 
 void main(void)
 {
-	//post();
+	post();
 
 	int err;
 
@@ -138,9 +159,9 @@ void main(void)
 		printk("[BLUETOOTH] Bluetooth init failed with err %d.\n", err);
 	}
 
-	k_thread_suspend(leds_id);
-	k_thread_suspend(motor_id);
-	k_thread_suspend(buzzer_id);
+	// k_thread_suspend(leds_id);
+	// k_thread_suspend(motor_id);
+	// k_thread_suspend(buzzer_id);
 	while (1) {
 		// set_waiting();
 		// state_machine();

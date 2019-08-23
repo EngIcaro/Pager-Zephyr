@@ -14,19 +14,18 @@ void state_machine()
 {
 	printk(" *** State Machine \n");
 	printk("estado atual: %d\n", state);
-    // static enum {WAITING, CHARGING, READY} state = WAITING;
     struct data_item_type package = { 0 };	
     k_msgq_get(&my_msgq, &package, K_FOREVER);
-	//u32_t size = k_msgq_num_free_get(&my_msgq);
+
     switch (state) {
         case WAITING:
             printk(" *** State --- WAITING \n");
             // pedido esta pronto. BT ON
             if (package.data1) {
 				state = READY;
-                k_thread_resume(leds_id);
-		        k_thread_resume(motor_id);
-		        k_thread_resume(buzzer_id);
+                // k_thread_resume(leds_id);
+		        // k_thread_resume(motor_id);
+		        // k_thread_resume(buzzer_id);
 				printk("waiting -> ready\n");
             }
 			// Pager foi colocado para carregar
@@ -45,17 +44,17 @@ void state_machine()
             // Se o pager for devolvido
             if (package.data2){
 				state = WAITING;
-                k_thread_suspend(leds_id);
-		        k_thread_suspend(motor_id);
-	        	k_thread_suspend(buzzer_id);
+                // k_thread_suspend(leds_id);
+		        // k_thread_suspend(motor_id);
+	        	// k_thread_suspend(buzzer_id);
 				printk("ready -> waiting\n");
             }
 			// Se o pager for colocado para carregar
 			else if(package.data3){
 				state = CHARGING;
-                k_thread_suspend(leds_id);
-		        k_thread_suspend(motor_id);
-	        	k_thread_suspend(buzzer_id);
+                // k_thread_suspend(leds_id);
+		        // k_thread_suspend(motor_id);
+	        	// k_thread_suspend(buzzer_id);
 				printk("ready -> charging, bt off\n");
 				onoff_state.current = OFF;
             }
@@ -70,16 +69,16 @@ void state_machine()
             // se ele estiver não estiver carregando
             if (package.data2) {
                 state = WAITING;
-                k_thread_suspend(leds_id);
-		        k_thread_suspend(motor_id);
-	        	k_thread_suspend(buzzer_id);
+                // k_thread_suspend(leds_id);
+		        // k_thread_suspend(motor_id);
+	        	// k_thread_suspend(buzzer_id);
 				printk("charging -> waiting\n");
             }
             // se ele continuar carregando.
             else{
-                k_thread_suspend(leds_id);
-		        k_thread_suspend(motor_id);
-	        	k_thread_suspend(buzzer_id);
+                // k_thread_suspend(leds_id);
+		        // k_thread_suspend(motor_id);
+	        	// k_thread_suspend(buzzer_id);
 				printk("charging -> charging\n");
             }
             break;

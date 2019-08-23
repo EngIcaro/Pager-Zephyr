@@ -8,8 +8,13 @@ void led_thread() {
 	//setup thread
 	leds_configure();
 	while(1) {
+		if(get_state() == READY) {
+			call_leds();
+		} else {
+			set_all_leds(1);
+		}
 		//printk("thread led activate\n");
-		call_leds();
+		// call_leds();
 		k_sleep(SLEEP_PULSE);
 	}
 }
@@ -18,9 +23,15 @@ void motor_thread() {
 	//setup thread
 	motors_configure();
 	while(1) {
+		if(get_state() == READY) {
+			call_motors();
+		} else {
+			set_motor('0', 0);
+			set_motor('1', 0);
+		}
 		//printk("thread motor activate\n");
-		call_motors();
-		k_sleep(SLEEP_PULSE);	
+		// call_motors();
+		k_sleep(SLEEP_PULSE);
 	}
 }
 
@@ -28,8 +39,13 @@ void buzzer_thread() {
 	//setup thread
 	buzzer_configure();
 	while(1) {
+		if(get_state() == READY) {
+			alarm();
+		} else {
+			set_buzzer(0);
+		}
 		//printk("thread buzzer activate\n");
-		alarm();
+		// alarm();
 		k_sleep(SLEEP_PULSE);
 	}
 }

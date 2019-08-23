@@ -83,4 +83,5 @@ void call_leds(){
   set_led('1', 1);
   k_sleep(SLEEP_LED);
   set_led('0', 1);
+  k_sleep(SLEEP_LED);
 }
