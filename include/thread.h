@@ -7,6 +7,7 @@
 #include "motor.h"
 #include "buzzer.h"
 #include "battery.h"
+#include "state_machine.h"
 
 #define SLEEP_PULSE 3000
 #define STACKSIZE 1024

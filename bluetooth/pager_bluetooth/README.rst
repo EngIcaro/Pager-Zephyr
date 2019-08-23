@@ -1,1 +1,0 @@
-Bluetooth implementation for the Pager project.

@@ -1,5 +1,5 @@
-#ifndef _SATATEMACHINE_H_
-#define _SATATEMACHINE_H_
+#ifndef _STATE_MACHINE_H_
+#define _STATE_MACHINE_H_
 
 #include <device.h>
 #include <gpio.h>

@@ -18,7 +18,6 @@ void motor_thread() {
 		call_motors();
 		k_sleep(SLEEP_PULSE);	
 	}
-
 }
 
 void buzzer_thread() {
@@ -36,7 +35,16 @@ void battery_thread() {
 	battery_configure();
 	while(1) {
 		//printk("thread battery activate\n");
-		//TODO: realizar leituras e chamar mudancas de estado necessarias
+		// int percent = get_meter();
+		//TODO: implementar envio de porcentagem para o chamador via bluetooth
+		
+		if(get_pgood()) {
+			set_charging();
+		}
+		if(get_chr()) {
+			//TODO: deixar algum LED aceso indicando carregamento
+		}
+		k_sleep(SLEEP_PULSE);
 	}
 }
 

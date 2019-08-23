@@ -12,14 +12,14 @@ float min_voltage = 3.3;        // discharged
 
 int get_meter() {
     //TODO: pesquisar api ADC para fazer leitura
-    float measure = 0;
-    float battery_voltage = 0;
+    //float measure = 0;
+    //float battery_voltage = 0;
     int percent = 0;
 
     /* Calculate battery voltage percent */
-    battery_voltage = (measure * (resistor_R17 + resistor_R18)) / resistor_R18;
+    //battery_voltage = (measure * (resistor_R17 + resistor_R18)) / resistor_R18;
 
-    percent = (int) (battery_voltage - min_voltage) / (max_voltage - min_voltage);
+    //percent = (int) (battery_voltage - min_voltage) / (max_voltage - min_voltage);
 
     return percent;
 }
@@ -52,8 +52,8 @@ void set_sysoff(u8_t value) {
 }
 
 int battery_configure() {
-    //TODO: pesquisar como declara pino analogico
-    ///device_get(adc_port)
+    //TODO: implementar configuracao e leitura de pino analogico (ADC)
+    //device_get(adc_port)
     //adc_channel_config(struct)
     //adc_read()
     // if(input_open(&meter,   METER_GPIO_PORT)){ return 1; }

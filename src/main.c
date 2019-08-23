@@ -1,20 +1,26 @@
 #include <zephyr.h>
 #include <device.h>
 #include <gpio.h>
-#include <misc/util.h>
 #include <misc/printk.h>
+#include <misc/util.h>
+#include <settings/settings.h>
 #include <shell/shell.h>
 #include <stdlib.h>
 
+#include "bt_callbacks.h"
+#include "bt_node.h"
+#include "bt_mesh.h"
 #include "input.h"
 #include "output.h"
 #include "led.h"
 #include "motor.h"
+#include "buzzer.h"
+#include "battery.h"
 #include "thread.h"
 #include "ic_logging.h"
-#include "stateMachine.h"
+#include "state_machine.h"
 
-// /* size of stack area used by each thread */
+/* Size of stack area used by each thread */
 #define SLEEP_TIME 6200
 
 static int cmd_call_spin(const struct shell *shell, size_t argc, char **argv) {	
@@ -121,6 +127,17 @@ void post(){
 void main(void)
 {
 	//post();
+
+	int err;
+
+	printk("[SYSTEM] Initializing Pager...\n");
+
+	/* Initialize the Bluetooth Subsystem */
+	err = bt_enable(bt_ready);
+	if (err) {
+		printk("[BLUETOOTH] Bluetooth init failed with err %d.\n", err);
+	}
+
 	k_thread_suspend(leds_id);
 	k_thread_suspend(motor_id);
 	k_thread_suspend(buzzer_id);

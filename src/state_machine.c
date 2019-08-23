@@ -1,4 +1,4 @@
-#include "stateMachine.h"
+#include "state_machine.h"
 
 struct data_item_type{
     u32_t data1;       // BT ON/OFF
@@ -28,10 +28,11 @@ void state_machine()
 			// Pager foi colocado para carregar
             else if(package.data3){
 				state = CHARGING;
+				//TODO: mudar estado do bluetooth para OFF (enviar set_op)
             }
 			// Continue esperando
 			else{
-				state = WAITING; 
+				state = WAITING;
 			}
             break;
         case READY:
@@ -49,6 +50,7 @@ void state_machine()
                 k_thread_suspend(leds_id);
 		        k_thread_suspend(motor_id);
 	        	k_thread_suspend(buzzer_id);
+				//TODO: mudar estado do bluetooth para OFF (enviar set_op)
             }
 			// Se ele ainda não for devolvido
             else{

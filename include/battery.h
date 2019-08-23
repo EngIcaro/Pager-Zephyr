@@ -3,7 +3,7 @@
 
 #include <adc.h>
 #include <gpio.h>
-#include <math.h>
+//#include <math.h>
 #include "input.h"
 #include "output.h"
 
@@ -44,13 +44,13 @@ int get_pgood();
 int get_chr();
 
 /* Set Charger Enable mode */
-void set_ce();
+void set_ce(u8_t value);
 
 /* Set Input Current Limit mode */
-void set_en();
+void set_en(u8_t value_1, u8_t value_2);
 
 /* Set SYSOFF mode */
-void set_sysoff();
+void set_sysoff(u8_t value);
 
 /* Configure Battery Pins */
 int battery_configure();
