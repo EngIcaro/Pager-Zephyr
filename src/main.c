@@ -142,15 +142,15 @@ void main(void)
 	k_thread_suspend(motor_id);
 	k_thread_suspend(buzzer_id);
 	while (1) {
-		set_waiting();
+		// set_waiting();
+		// state_machine();
+		// k_sleep(K_SECONDS(4));
+		// set_ready();
+		// state_machine();
+		// k_sleep(K_SECONDS(4));
+		// set_charging();
 		state_machine();
-		k_sleep(K_SECONDS(4));
-		set_ready();
-		state_machine();
-		k_sleep(K_SECONDS(4));
-		set_charging();
-		state_machine();
-		k_sleep(K_SECONDS(4));
+		k_sleep(K_SECONDS(1));
 		/*k_sleep(SLEEP_TIME);
 
 		k_sleep(SLEEP_TIME);

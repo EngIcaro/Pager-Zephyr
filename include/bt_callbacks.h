@@ -7,6 +7,7 @@
 #include <settings/settings.h>
 
 #include "bt_node.h"
+#include "state_machine.h"
 
 void gen_onoff_set(struct bt_mesh_model *model,
 			       struct bt_mesh_msg_ctx *ctx,
