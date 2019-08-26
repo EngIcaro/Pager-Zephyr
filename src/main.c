@@ -30,7 +30,8 @@ static int cmd_call_spin(const struct shell *shell, size_t argc, char **argv) {
 static int cmd_call_leds(const struct shell *shell, size_t argc, char **argv) {	
 	char led = *(*(argv+1));
 	shell_print(shell, "[SHELL] Turning on all leds...\n");
-	set_all_leds(led);
+	printk(" u8t: %d\n",(u8_t)led - 48);
+	set_all_leds((u8_t)led - 48);
 	shell_print(shell, "[SHELL] Done!\n");
 	return 0;
 }
@@ -38,9 +39,10 @@ static int cmd_call_leds(const struct shell *shell, size_t argc, char **argv) {
 static int cmd_call_led(const struct shell *shell, size_t argc, char **argv) {
 	char led = *(*(argv+1));
 	char status = *(*(argv+2));
-	if(led == '0') shell_print(shell, "[SHELL] Turning on led %c...\n", led);
+	printk("status do call led %d\n", (int)status);
+	if(status == '0') shell_print(shell, "[SHELL] Turning on led %c...\n", led);
 	else shell_print(shell, "[SHELL] Turning off led %c...\n", led);
-	set_led(led, status);
+	set_led(led, (u8_t)status - 48);
 	shell_print(shell, "[SHELL] Done!\n");
 	return 0;
 }
@@ -48,9 +50,9 @@ static int cmd_call_led(const struct shell *shell, size_t argc, char **argv) {
 static int cmd_call_motor(const struct shell *shell, size_t argc, char **argv) {
 	char motor = *(*(argv+1));
 	char status = *(*(argv+2));
-	if(motor == '0') shell_print(shell, "[SHELL] Turning on motor %c...\n", motor);
+	if(status == '0') shell_print(shell, "[SHELL] Turning on motor %c...\n", motor);
 	else shell_print(shell, "[SHELL] Turning off motor %c...\n", motor);
-	set_motor(motor, status);
+	set_motor(motor, (u8_t)status - 48);
 	shell_print(shell, "[SHELL] Done!\n");
 	return 0;
 }
@@ -64,9 +66,9 @@ static int cmd_call_motors(const struct shell *shell, size_t argc, char **argv) 
 }
 
 static int cmd_call_buzzer(const struct shell *shell, size_t argc, char **argv) {	
-	char status = *(*(argv+1));
+	// char status = *(*(argv+1));
 	shell_print(shell, "[SHELL] Beeping...\n");
-	set_buzzer(status);
+	alarm();
 	shell_print(shell, "[SHELL] Done!\n");
 	return 0;
 }
@@ -78,7 +80,7 @@ SHELL_STATIC_SUBCMD_SET_CREATE(sub_call,
     SHELL_CMD_ARG(leds, NULL, "Acione todos os Leds.", cmd_call_leds, 2, NULL),
     SHELL_CMD_ARG(motor, NULL, "Acione um Motor.", cmd_call_motor, 3, NULL),
     SHELL_CMD_ARG(motors, NULL, "Acione os Motores.", cmd_call_motors, 1, NULL),
-    SHELL_CMD_ARG(buzzer, NULL, "Acione o buzzer.", cmd_call_buzzer, 2, NULL),
+    SHELL_CMD_ARG(buzzer, NULL, "Acione o buzzer.", cmd_call_buzzer, 1, NULL),
 	SHELL_SUBCMD_SET_END
 );
 
