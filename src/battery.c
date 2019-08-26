@@ -75,7 +75,7 @@ int battery_configure() {
     if(output_configure(&sysoff, SYSOFF_GPIO_PIN, GPIO_DIR_OUT)){ return 1; }
 
     set_ce(0);      // (0 = enable charger / 1 = disable charger)
-    set_en(1, 0);   // (0,0 = 100mA / 0,1 = 500mA / 1,0 = ILIM defined, 1.3A / 1,1 = standby)
+    set_en(1, 0);   // (0,0 = 100mA / 0,1 = 500mA / 1,0 = defined by ILIM, 1.3A / 1,1 = standby)
     set_sysoff(0);  // (0 = normal operation / 1 = disable battery)
 
     return 0;

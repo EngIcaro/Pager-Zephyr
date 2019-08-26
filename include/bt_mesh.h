@@ -5,7 +5,6 @@
 #include <bluetooth/mesh.h>
 #include <misc/printk.h>
 #include <settings/settings.h>
-
 #include "bt_callbacks.h"
 #include "bt_node.h"
 

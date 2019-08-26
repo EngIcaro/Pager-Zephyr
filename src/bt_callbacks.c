@@ -11,7 +11,6 @@ void gen_onoff_get(struct bt_mesh_model *model,
 			       struct net_buf_simple *buf) {
 	NET_BUF_SIMPLE_DEFINE(msg, 2 + 1 + 4);
 	struct onoff_state *onoff_state = model->user_data;
-	printk("entrei get, bluetooth\n");
 	printk("[BLUETOOTH] Node 0x%04x has state 0x%02x.\n",
 		   bt_mesh_model_elem(model)->addr, onoff_state->current);
 	bt_mesh_model_msg_init(&msg, BT_MESH_MODEL_OP_GEN_ONOFF_STATUS);
@@ -20,7 +19,6 @@ void gen_onoff_get(struct bt_mesh_model *model,
 	if (bt_mesh_model_send(model, ctx, &msg, NULL, NULL)) {
 		printk("[BLUETOOTH] Unable to send OnOff Status response.\n");
 	}
-	//TODO: incluir um else com uma mensagem de log de sucesso
 }
 
 void gen_onoff_set_unack(struct bt_mesh_model *model,
@@ -28,23 +26,19 @@ void gen_onoff_set_unack(struct bt_mesh_model *model,
 				         struct net_buf_simple *buf) {
 	u8_t call;
 	call = net_buf_simple_pull_u8(buf);
-	printk("entrei set, bluetooth\n");
+
 	if(call == ON && get_state() == WAITING) {
 		set_ready();
-		printk("ready do bluetooth\n");
 	} else if(call == OFF && get_state() == READY) {
 		set_waiting();
-		printk("waiting do bluetooth\n");
 	} else {
-		printk("nada\n");
 		return;
 	}
 
 	struct net_buf_simple *msg = model->pub->msg;
 	struct onoff_state *onoff_state = model->user_data;
 	int err;
-
-	// onoff_state->current = net_buf_simple_pull_u8(buf);
+	
 	onoff_state->current = call;
 	printk("[BLUETOOTH] Node 0x%02x was set to state 0x%02x.\n",
 		bt_mesh_model_elem(model)->addr, onoff_state->current);

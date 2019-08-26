@@ -13,6 +13,7 @@
 
 #include <device.h>
 #include <gpio.h>
+#include <misc/printk.h>
 
 struct output {
     struct device *device;

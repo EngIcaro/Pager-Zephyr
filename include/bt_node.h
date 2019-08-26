@@ -4,7 +4,6 @@
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/mesh.h>
 #include <settings/settings.h>
-
 #include "bt_callbacks.h"
 
 /* Model Operation Codes */

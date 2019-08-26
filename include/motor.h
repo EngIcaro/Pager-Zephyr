@@ -1,17 +1,14 @@
 #ifndef _MOTOR_H_
 #define _MOTOR_H_
 
-#include <gpio.h>
 #include "output.h"
 
-#define SLEEP_MOTOR 3000
+#define SLEEP_MOTOR 3	//seconds
 
-// Função para configurar os motores
 int motors_configure();
-// Função para setar determinado motor
-void set_motor(char motor, u8_t value);
-// Função que chama a rotina de call do sistema
-void call_motors();
 
+void set_motor(char motor, u8_t value);
+
+void call_motors();
 
 #endif

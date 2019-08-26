@@ -17,65 +17,61 @@
 #include "buzzer.h"
 #include "battery.h"
 #include "thread.h"
-#include "ic_logging.h"
 #include "state_machine.h"
 
-/* Size of stack area used by each thread */
-#define SLEEP_TIME 6200
-
+/* Shell commands */
 static int cmd_call_spin(const struct shell *shell, size_t argc, char **argv) {	
-	shell_print(shell, "Spin Leds ...\n");
+	shell_print(shell, "[SHELL] Spining leds...\n");
 	call_leds();
-	shell_print(shell, "Done!\n");
+	shell_print(shell, "[SHELL] Done!\n");
 	return 0;
 }
 
 static int cmd_call_leds(const struct shell *shell, size_t argc, char **argv) {	
 	char led = *(*(argv+1));
-	shell_print(shell, "Turn on all leds ...\n");
+	shell_print(shell, "[SHELL] Turning on all leds...\n");
 	set_all_leds(led);
-	shell_print(shell, "Done!\n");
+	shell_print(shell, "[SHELL] Done!\n");
 	return 0;
 }
 
 static int cmd_call_led(const struct shell *shell, size_t argc, char **argv) {
 	char led = *(*(argv+1));
 	char status = *(*(argv+2));
-	if(led == '0') shell_print(shell, "Turn on led %c...\n", led);
-	else shell_print(shell, "Turn off led %c...\n", led);
+	if(led == '0') shell_print(shell, "[SHELL] Turning on led %c...\n", led);
+	else shell_print(shell, "[SHELL] Turning off led %c...\n", led);
 	set_led(led, status);
-	shell_print(shell, "Done!\n");
+	shell_print(shell, "[SHELL] Done!\n");
 	return 0;
 }
 
 static int cmd_call_motor(const struct shell *shell, size_t argc, char **argv) {
 	char motor = *(*(argv+1));
 	char status = *(*(argv+2));
-	if(motor == '0') shell_print(shell, "Turn on motor %c...\n", motor);
-	else shell_print(shell, "Turn off motor %c...\n", motor);
+	if(motor == '0') shell_print(shell, "[SHELL] Turning on motor %c...\n", motor);
+	else shell_print(shell, "[SHELL] Turning off motor %c...\n", motor);
 	set_motor(motor, status);
-	shell_print(shell, "Done!\n");
+	shell_print(shell, "[SHELL] Done!\n");
 	return 0;
 }
 
 static int cmd_call_motors(const struct shell *shell, size_t argc, char **argv) {
 	// Acessar: Array de Strings -> String na posição argc+1
-	shell_print(shell, "Vibrating ...\n");
+	shell_print(shell, "[SHELL] Vibrating...\n");
 	call_motors();
-	shell_print(shell, "Done!\n");
+	shell_print(shell, "[SHELL] Done!\n");
 	return 0;
 }
 
 static int cmd_call_buzzer(const struct shell *shell, size_t argc, char **argv) {	
 	char status = *(*(argv+1));
-	shell_print(shell, "Beaping ...\n");
+	shell_print(shell, "[SHELL] Beeping...\n");
 	set_buzzer(status);
-	shell_print(shell, "Done!\n");
+	shell_print(shell, "[SHELL] Done!\n");
 	return 0;
 }
 
-// SHELL
-// Colocando os comandos criados como subcomandos do run
+/* Shell declaration */
 SHELL_STATIC_SUBCMD_SET_CREATE(sub_call,
     SHELL_CMD_ARG(spin, NULL, "Acione animaçao SPIN.", cmd_call_spin, 1, NULL),
 	SHELL_CMD_ARG(led, NULL, "Acione um Led.", cmd_call_led, 3, NULL),
@@ -86,95 +82,70 @@ SHELL_STATIC_SUBCMD_SET_CREATE(sub_call,
 	SHELL_SUBCMD_SET_END
 );
 
-// Setando o comando call no root
 SHELL_CMD_REGISTER(call, &sub_call, "Comandos do pager", NULL);
 
-void post(){
-	k_thread_suspend(leds_id);
-	k_thread_suspend(motor_id);
-	k_thread_suspend(buzzer_id);
+/* Power-On Self-Test (POST) */
+void post() {
 
-	printk("Running Post...\n");
-	k_sleep(1500);
-	// printk("Leds Configure...\n");
+	printk("[POST] Running POST...\n");
+	k_sleep(K_MSEC(1500));
+
 	if(!leds_configure()){
-		printk("Leds Configure... OK!\n");
+		printk("[POST] Configuring leds... OK!\n");
 	} else{ 
-		printk("Leds Configure... ERROR!\n");
+		printk("[POST] Configuring leds... ERROR!\n");
 		return;
 	}
 	set_all_leds(0);
-	k_sleep(1000);
+	k_sleep(K_MSEC(1000));
 	set_all_leds(1);
 	
-	// printk("\n");
 	if(!motors_configure()){
-		printk("Motors Configure... OK!\n");
+		printk("[POST] Configuring motors... OK!\n");
 	} else{ 
-		printk("Motors Configure...  ERROR!\n");
+		printk("[POST] Configuring motors... ERROR!\n");
 		return;
 	}
 
 	set_motor('0', 1);
 	set_motor('1', 1);
-	k_sleep(1000);
+	k_sleep(K_MSEC(1000));
 	set_motor('0', 0);
 	set_motor('1', 0);
 
-	// printk("Buzzer Configure...\n");
 	if(!buzzer_configure()){
-		printk("Buzzer Configure... OK!\n");
+		printk("[POST] Configuring buzzer... OK!\n");
 	} else{ 
-		printk("Buzzer Configure... ERROR!\n");
+		printk("[POST] Configuring buzzer... ERROR!\n");
 		return;
 	}
 
-	set_buzzer('1');
-	k_sleep(1000);
-	set_buzzer('0');
+	set_buzzer(1);
+	k_sleep(K_MSEC(1000));
+	set_buzzer(0);
 
-	printk("Pau na máquina!\n");
-	k_sleep(1500);
-
-	k_thread_resume(leds_id);
-	k_thread_resume(motor_id);
-	k_thread_resume(buzzer_id);
+	printk("[POST] Everything seems right. PAU NA MAQUINA!\n");
+	k_sleep(K_MSEC(1500));
 }
 
-// Para realizar o teste a Thread main vai dormir durante 10 segundos e quando acordar vai
-// abortar as threads motor, leds e buzzer
+/* System Main Loop */
+void main(void) {
+	k_sleep(K_SECONDS(1));
 
-
-void main(void)
-{
+	/* Execute POST */
 	post();
 
-	int err;
-
 	printk("[SYSTEM] Initializing Pager...\n");
-
+	
 	/* Initialize the Bluetooth Subsystem */
+	int err;
 	err = bt_enable(bt_ready);
 	if (err) {
 		printk("[BLUETOOTH] Bluetooth init failed with err %d.\n", err);
 	}
 
-	// k_thread_suspend(leds_id);
-	// k_thread_suspend(motor_id);
-	// k_thread_suspend(buzzer_id);
 	while (1) {
-		// set_waiting();
-		// state_machine();
-		// k_sleep(K_SECONDS(4));
-		// set_ready();
-		// state_machine();
-		// k_sleep(K_SECONDS(4));
-		// set_charging();
 		state_machine();
 		k_sleep(K_SECONDS(1));
-		/*k_sleep(SLEEP_TIME);
-
-		k_sleep(SLEEP_TIME);
-		*/
 	}
 }

@@ -18,7 +18,6 @@ list(APPEND SOURCES
     "${PROJECT_SOURCE_DIR}/src/buzzer.c"
     "${PROJECT_SOURCE_DIR}/src/battery.c"
     "${PROJECT_SOURCE_DIR}/src/thread.c"
-    "${PROJECT_SOURCE_DIR}/src/ic_logging.c"
     "${PROJECT_SOURCE_DIR}/src/state_machine.c"
     "${PROJECT_SOURCE_DIR}/src/bt_callbacks.c"
     "${PROJECT_SOURCE_DIR}/src/bt_node.c"
